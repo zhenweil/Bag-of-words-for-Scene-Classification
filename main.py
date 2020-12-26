@@ -11,44 +11,10 @@ from opts import get_opts
 
 def main():
     opts = get_opts()
-
-    ## Q1.1
-    #img_path = join(opts.data_dir, 'kitchen/sun_aasmevtpkslccptd.jpg')
-    #img = Image.open(img_path)
-    #img = np.array(img).astype(np.float32)/255
-    #filter_responses = visual_words.extract_filter_responses(opts, img)
-    #util.display_filter_responses(opts, filter_responses)
-
-    ## Q1.2
-    # response_one_image = visual_words.compute_dictionary_one_image(opts, path_name)
     n_cpu = util.get_num_CPU()
     visual_words.compute_dictionary(opts, n_worker=n_cpu)
-    
-    ## Q1.3
-    '''data_dir = opts.data_dir
-    train_files = open(join(data_dir, 'train_files_small.txt')).read().splitlines()
-    img_path = join(opts.data_dir, train_files[3])
-    img = Image.open(img_path)
-    img = np.array(img).astype(np.float32)/255
-    dictionary = np.load(join(opts.out_dir, 'dictionary.npy'))
-    wordmap = visual_words.get_visual_words(opts, img, dictionary)
-    util.visualize_wordmap(wordmap)'''
-
-    ## Q2.1-2.4
-    #n_cpu = util.get_num_CPU()
-    #hist = visual_recog.get_feature_from_wordmap(opts, wordmap)
-    #hist = visual_recog.get_feature_from_wordmap_SPM(opts, wordmap)
     visual_recog.build_recognition_system(opts, n_worker=n_cpu)
-
-    ## Q2.5
-    #n_cpu = util.get_num_CPU()
     conf, accuracy = visual_recog.evaluate_recognition_system(opts, n_worker=n_cpu)
-    
-    # print(conf)
-    # print(accuracy)
-    # np.savetxt(join(opts.out_dir, 'confmat.csv'), conf, fmt='%d', delimiter=',')
-    # np.savetxt(join(opts.out_dir, 'accuracy.txt'), [accuracy], fmt='%g')
-
 
 if __name__ == '__main__':
    main()
