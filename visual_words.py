@@ -20,7 +20,6 @@ def extract_filter_responses(opts, img):
     '''
     
     filter_scales = opts.filter_scales
-    # ----- TODO -----
     # If img is gray scale, convert it to 3d
     if(img.ndim == 2):
         img = np.dstack((img,img,img))
@@ -56,7 +55,6 @@ def compute_dictionary_one_image(opts, path_name):
     Extracts a random subset of filter responses of an image and save it to disk
     This is a worker function called by compute_dictionary
 
-    Your are free to make your own interface based on how you implement compute_dictionary
     [input]
     * opts    : options
     * path_name    : partial name of the picture which does not include data_dir
@@ -65,9 +63,6 @@ def compute_dictionary_one_image(opts, path_name):
     [comment]
     * path of data_dir is not needed here because data_dir will be joined with picture path below
     '''
-    
-    # ----- TODO -----
-    #opts, path_name = args
     num_sample = opts.alpha
     img_path = join(opts.data_dir, path_name)
     img = Image.open(img_path)
@@ -102,11 +97,11 @@ def compute_dictionary(opts, n_worker=1):
     num_scales = len(filter_scales)
     num_layers = 12*num_scales
     train_files = open(join(data_dir, 'train_files.txt')).read().splitlines()
-    # ----- TODO -----
     words = []
     num_pic = len(train_files)
+    print("started building dictionary")
     print("Number of training images is: ", num_pic)
-    #num_pic = 50
+
     num_sample = opts.alpha
     '''pool = multiprocessing.Pool(processes = n_worker)
     args = [(opts, path_name) for path_name in train_files[0:10]]
@@ -117,17 +112,14 @@ def compute_dictionary(opts, n_worker=1):
         dict_one_image_list = list(dict_one_image)
         words.append(dict_one_image_list)
         progress = (i/num_pic) * 100
-        if(i % 5 == 0):
+        if(i % 10 == 0):
             print("progress is: %.2f" % progress, "%.")
     words = np.asarray(words).reshape(num_pic*num_sample,num_layers)
     kmeans = KMeans(n_clusters = K).fit(words)
     dictionary = kmeans.cluster_centers_
     np.save(join(out_dir,'words.npy'), words)
     np.save(join(out_dir,'dictionary.npy'), dictionary)
-    pass
 
-    ## example code snippet to save the dictionary
-    # np.save(join(out_dir, 'dictionary.npy'), dictionary)
 
 def get_visual_words(opts, img, dictionary):
     '''
@@ -140,7 +132,6 @@ def get_visual_words(opts, img, dictionary):
     [output]
     * wordmap: numpy.ndarray of shape (H,W)
     '''
-    # ----- TODO -----
     K = opts.K
     filter_scales = opts.filter_scales
     num_scales = len(filter_scales)

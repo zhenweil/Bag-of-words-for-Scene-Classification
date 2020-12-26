@@ -1,10 +1,8 @@
 import os, math, multiprocessing
 from os.path import join
 from copy import copy
-
 import numpy as np
 from PIL import Image
-
 import visual_words
 
 def get_feature_from_wordmap(opts, wordmap):
@@ -42,12 +40,10 @@ def get_feature_from_wordmap_SPM(opts, wordmap):
         
     K = opts.K
     L = opts.L
-    # ----- TODO -----
     height = wordmap.shape[0]
     width = wordmap.shape[1]
     hist_SPM = []
     for i in range(L):
-        # Every layer
         num_row = num_col = pow(2,i)
         len_row = height//num_row
         len_col = width//num_col
@@ -78,7 +74,6 @@ def get_image_feature(opts, img_path, dictionary):
     * feature: list of length K
     '''
 
-    # ----- TODO -----
     img = Image.open(img_path)
     img = np.array(img).astype(np.float32)/255
     wordmap = visual_words.get_visual_words(opts, img, dictionary)
@@ -108,19 +103,17 @@ def build_recognition_system(opts, n_worker=1):
     train_labels = np.loadtxt(join(data_dir, 'train_labels.txt'), np.int32)
     dictionary = np.load(join(out_dir, 'dictionary.npy'))
 
-    # ----- TODO -----
     num_pic = len(train_files)
-    #num_pic = 10
     features_all = []
+    print("Start computing feature pyramids for all images")
     for i in range(num_pic):
         img_path = join(opts.data_dir, train_files[i])
         features = get_image_feature(opts, img_path, dictionary)
         features_all.append(features)
         progress = (i/num_pic) * 100
-        if(i % 5 == 0):
+        if(i % 10 == 0):
             print("progress is: %.2f" % progress, "%.")
 
-    ## example code snippet to save the learned system
     np.savez_compressed(join(out_dir, 'trained_system.npz'),
                         features=features_all,
                         labels=train_labels,
@@ -139,7 +132,6 @@ def distance_to_set(word_hist, histograms):
     * sim: numpy.ndarray of shape (N)
     '''
 
-    # ----- TODO -----
     intersection = np.minimum(histograms, word_hist)
     similarity = np.sum(intersection, axis = 1)
     label_index = np.argmax(similarity)
@@ -172,13 +164,12 @@ def evaluate_recognition_system(opts, n_worker=1):
     test_files = open(join(data_dir, 'test_files.txt')).read().splitlines()
     test_labels = np.loadtxt(join(data_dir, 'test_labels.txt'), np.int32)
 
-    # ----- TODO -----
     histograms = trained_system['features']
     train_labels = trained_system['labels']
     num_pic = len(test_files)
-    #num_pic = 10
     conf = np.zeros((8,8))
     accuracy = 0
+    print("Start evaluating")
     for i in range(num_pic):
         img_path = join(opts.data_dir, test_files[i])
         word_hist = get_image_feature(opts, img_path, dictionary)
