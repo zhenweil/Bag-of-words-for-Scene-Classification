@@ -10,3 +10,10 @@ This project uses bag-of-words approach to classify 8 scenes. It applied feature
 <div align="center">
   <img src="Results/Visual_words.jpg" width="300"/>
 </div>
+3. Calculating SIFT histogram based on frequencies of visual words appeared in images. A multi-scale histogram was computed. 
+4. Calculate similarities between test image spatial histogram and train image spatial histogram.
+## Usage
+1. Run main.py
+2. Hyperparameters can be tuned in opts.py
+## Results
+The image classification system is able to reach 65% accuracy with a subset of the SUN database containing 1600 images from different scene categoties.
