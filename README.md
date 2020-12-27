@@ -6,3 +6,7 @@ This project uses bag-of-words approach to classify 8 scenes. It applied feature
   <img src="Results/Kitchen.jpg" width="300"/>
   <img src="Results/Filter_response.png" width="300"/>
 </div>
+2. Compute visual words using k-means. Each center stands for a visual word.
+<div align="center">
+  <img src="Results/Visual_words.jpg" width="300"/>
+</div>
