@@ -18,4 +18,4 @@ This project uses bag-of-words approach to classify 8 scenes. It applied feature
 2. Hyperparameters can be tuned in opts.py
 
 ## Results
-The image classification system is able to reach 65% accuracy with a subset of the SUN database containing 1600 images from different scene categoties.
+The image classification system is able to reach 75% accuracy with a subset of the SUN database containing 1600 images from different scene categoties.
